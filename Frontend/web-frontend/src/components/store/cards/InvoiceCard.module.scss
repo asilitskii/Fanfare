@@ -1,0 +1,79 @@
+@use '../../../styles/common.scss';
+
+.wrapper {
+	background: white;
+	max-width: 360px;
+	width: 340px;
+	display: flex;
+	flex-flow: column nowrap;
+	font-size: 16px;
+	padding: 10px 30px 0;
+
+	.networkBlock {
+		width: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		font-size: 1em;
+		padding-top: 16px;
+
+		.name {
+			padding-left: 0.5em;
+			font-size: 1.6em;
+			font-family: common.$default-font-family;
+			color: common.$dark-blue;
+		}
+
+		.item {
+			padding-top: 10px;
+			font-size: 1em;
+			font-family: common.$default-font-family;
+			color: common.$dark-blue;
+		}
+
+		&:first-child {
+			padding-top: 0;
+		}
+	}
+
+	.lineBlock {
+		padding-top: 5px;
+		border-bottom: 2px solid common.$dark-blue;
+	}
+
+	.subscribeText {
+		font-family: common.$default-font-family;
+		color: common.$dark-blue;
+		font-size: 16px;
+		padding-top: 5px;
+	}
+
+	.checkWrapper {
+		font-size: 24px;
+		padding-top: 5px;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+
+		.text {
+			font-family: common.$default-font-family;
+			font-size: 1.5em;
+			color: common.$dark-blue;
+			line-height: 1.5em;
+			height: 1.5em;
+		}
+
+		.value {
+			font-family: common.$default-font-family;
+			font-size: 1em;
+			color: common.$dark-blue;
+			padding-top: 0.6em;
+			max-width: 45%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+
+	footer {
+		padding-bottom: 20px;
+	}
+}

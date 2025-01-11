@@ -1,0 +1,14 @@
+@use '../../styles/common.scss';
+
+.wrapper {
+	display: flex;
+	flex-flow: column nowrap;
+	min-width: 480px;
+	width: 100%;
+	min-height: 100vh;
+	background: common.$radial-gradient-background;
+
+	header {
+		width: 100%;
+	}
+}

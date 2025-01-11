@@ -1,0 +1,36 @@
+image: node:latest
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - echo "$SSH_KNOWN_HOSTS" | base64 -d > ~/.ssh/known_hosts
+  - chmod 600 ~/.ssh/known_hosts
+
+build:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+    - npm run check
+    - npx eslint .
+
+deploy:
+  stage: deploy
+  script:
+    - |
+      ssh -i ~/.ssh/id_rsa www@"$SSH_HOST" <<EOF
+      cd ~/frontend
+      docker compose down -v
+      git pull origin main || exit 1
+      docker compose up -d --build
+      EOF
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

@@ -1,0 +1,63 @@
+@use '../../../styles/common.scss';
+
+.wrapper {
+	background: common.$radial-gradient-background;
+	border-radius: 39px;
+	width: 480px;
+	height: 240px;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	justify-content: flex-start;
+	font-size: 24px;
+
+	.logo {
+		height: 100px;
+	}
+
+	.text {
+		font-size: 1em;
+		font-family: common.$default-font-family;
+	}
+
+	.buttonsWrapper {
+		padding-top: 32px;
+		display: flex;
+		justify-content: space-between;
+		width: 60%;
+		font-size: 1em;
+
+		.confirm {
+			width: 100%;
+
+			button {
+				width: 80%;
+
+				@include common.default-button(45px, 44px, common.$dark-blue, #dfe0e1);
+
+				font-size: 1em;
+				font-family: common.$default-font-family;
+			}
+		}
+
+		.reject {
+			width: 100%;
+
+			button {
+				width: 80%;
+
+				@include common.default-button(45px, 44px, common.$dark-blue, #d8eaf6);
+
+				font-size: 1em;
+				font-family: common.$default-font-family;
+			}
+		}
+	}
+}
+
+@media (width < 540px) {
+	.wrapper {
+		width: 320px;
+		font-size: 18px;
+	}
+}

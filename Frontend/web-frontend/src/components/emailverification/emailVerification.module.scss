@@ -1,0 +1,23 @@
+@use '../../styles/common';
+
+.wrapper {
+	font-family: common.$default-font-family;
+	font-size: 64px;
+
+	.msg {
+		padding-top: 10%;
+
+		.buttonStyle {
+			@include common.default-button(60px);
+
+			min-width: 200px;
+			font-size: 0.4em;
+			width: 20%;
+			margin-top: 5%;
+		}
+	}
+
+	.preloader {
+		padding-top: 50%;
+	}
+}

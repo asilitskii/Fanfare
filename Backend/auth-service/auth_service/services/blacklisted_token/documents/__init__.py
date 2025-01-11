@@ -1,0 +1,4 @@
+from .blacklisted_access_token import BlacklistedAccessToken
+from .blacklisted_refresh_token import BlacklistedRefreshToken
+
+__document_models__ = [BlacklistedAccessToken, BlacklistedRefreshToken]

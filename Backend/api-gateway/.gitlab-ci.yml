@@ -1,0 +1,27 @@
+image: node:latest
+
+stages:
+  - deploy
+
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - echo "$SSH_KNOWN_HOSTS" | base64 -d > ~/.ssh/known_hosts
+  - chmod 600 ~/.ssh/known_hosts
+
+deploy:
+  stage: deploy
+  script:
+    - |
+      ssh -i ~/.ssh/id_rsa www@"$SSH_HOST" <<EOF
+      cd ~/api-gateway
+      docker compose -f deploy.yml down
+      git pull origin main || exit 1
+      docker compose -f deploy.yml up -d --build
+      EOF
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

@@ -1,0 +1,29 @@
+$store-grid-padding-side: 51px;
+$store-grid-spacing-between: 30px;
+$store-grid-edge-spacing: 55px;
+$store-card-width: 389px;
+
+// 3 столбца.
+.storeGrid {
+	display: grid;
+	padding-top: 224px;
+	padding-left: $store-grid-padding-side;
+	padding-right: $store-grid-padding-side;
+	grid-template-columns: repeat(3, 1fr);
+	gap: $store-grid-spacing-between;
+	width: 100%;
+}
+
+// 2 столбца.
+@media (width <= calc($store-card-width * 3 + $store-grid-spacing-between * 2 + $store-grid-edge-spacing * 2)) {
+	.storeGrid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+// 1 столбец.
+@media (width <= calc($store-card-width * 2 + $store-grid-spacing-between + $store-grid-edge-spacing * 2)) {
+	.storeGrid {
+		grid-template-columns: 1fr;
+	}
+}

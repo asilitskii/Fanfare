@@ -1,0 +1,69 @@
+@use '../../../../../../styles/common';
+
+.preloader {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.wrapper {
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 100vh;
+	min-width: 400px;
+	flex-shrink: 0;
+	font-size: 60px;
+	font-family: common.$default-font-family;
+
+	.content {
+		padding-top: 24px;
+		padding-left: 5%;
+		padding-right: 5%;
+		width: 100%;
+
+		h1 {
+			font-size: 1em;
+			font-weight: lighter;
+			margin-bottom: 1%;
+		}
+
+		.tabs {
+			display: flex;
+			flex-flow: row nowrap;
+			gap: 3%;
+			justify-content: start;
+
+			button {
+				@include common.default-button(
+					43px,
+					10px,
+					common.$default-buttons-text-color,
+					#efcefa
+				);
+
+				font-size: 0.6em;
+				padding: 0 3%;
+				line-height: 1em;
+				min-width: fit-content;
+
+				&:disabled {
+					background-color: common.$disabled-background-button-color;
+				}
+			}
+		}
+
+		.placeholder {
+			margin-top: 2%;
+			width: 100%;
+			text-align: start;
+			font-size: 0.5em;
+		}
+
+		.cardWrapper {
+			margin-top: 2%;
+			box-shadow: 0 8px 4px 0 #00000040;
+		}
+	}
+}

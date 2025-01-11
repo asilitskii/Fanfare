@@ -1,0 +1,18 @@
+services:
+  app:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - "./deploy.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - internal-backend-network
+      - internal-frontend-network
+
+networks:
+  internal-backend-network:
+    external: true
+  internal-frontend-network:
+    external: true

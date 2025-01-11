@@ -1,0 +1,67 @@
+@use '../../../../../styles/common';
+
+.wrapper {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	font-family: common.$default-font-family;
+	color: common.$dark-blue;
+	font-size: 24px;
+	height: 150px;
+
+	.name {
+		font-size: 1.5em;
+		display: flex;
+		justify-content: center;
+	}
+
+	.idInput {
+		padding-top: 10px;
+		display: flex;
+		justify-content: center;
+
+		input {
+			width: 230px;
+			border-radius: 6px;
+			height: 36px;
+			border-width: 0;
+			background-color: #c3b1d3;
+			box-shadow: #0c0c0d0d 0 1px 4px -1px inset;
+			padding-right: 5%;
+			padding-left: 5%;
+
+			&:focus {
+				outline: none;
+			}
+
+			color: common.$gray;
+			font-family: common.$default-font-family;
+			font-size: 0.8em;
+
+			&::placeholder {
+				color: common.$gray;
+			}
+		}
+	}
+
+	.submitBtn {
+		padding-top: 20px;
+		display: flex;
+		justify-content: center;
+
+		button {
+			padding-left: 1em;
+			padding-right: 1em;
+			font-size: 0.9em;
+			font-family: common.$default-font-family;
+			height: 32px;
+			border-width: 0;
+			border-radius: 10px;
+			background-color: #efcefa;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}

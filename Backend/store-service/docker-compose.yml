@@ -1,0 +1,25 @@
+services:
+  mongodb:
+    image: l33tlamer/mongodb-without-avx
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    env_file:
+      - .env
+
+  minio:
+    image: minio/minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio-data:/data
+    env_file:
+      - .env
+    command: server /data --console-address ":9001"
+    restart: always
+
+volumes:
+  minio-data:
+  mongo-data:

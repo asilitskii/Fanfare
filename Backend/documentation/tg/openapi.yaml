@@ -1,0 +1,498 @@
+openapi: 3.0.1
+info:
+  title: Fanflow TG Store API
+  description: >-
+    API for managing a store linked to a blogger, tracking user engagement, and
+    awarding FanfCoin. Token always valid, because api gateway proxy token
+    through auth/validate
+  version: 1.0.0
+paths:
+  /tg/activity:
+    post:
+      tags:
+        - activity-controller
+      summary: Create TG channel activity collection for a store
+      description: >-
+        Creates a store for a blogger with settings for awarding FanfCoin for
+        comments and boosts
+      operationId: createChannelActivity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatDto'
+        required: true
+      responses:
+        '201':
+          description: Store created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '403':
+          description: User is not the owner of this store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '409':
+          description: Store already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - activity-controller
+      summary: Stop TG channel activity tracking in store
+      description: Stops tracking activity for the specified store
+      operationId: deleteChannelActivity
+      parameters:
+        - name: store_id
+          in: query
+          required: true
+          schema:
+            maxLength: 24
+            minLength: 24
+            type: string
+      responses:
+        '200':
+          description: Activity tracking stopped successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '403':
+          description: User is not the owner of this store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+    patch:
+      tags:
+        - activity-controller
+      summary: Update TG channel activity collection settings
+      description: Updates the FanfCoin award rates and comment waiting time for a store
+      operationId: patchChannelActivity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatDtoNullable'
+        required: true
+      responses:
+        '200':
+          description: Store settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '403':
+          description: User is not the owner of this store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+  /tg/activity/{store_id}/unsubscribe:
+    post:
+      tags:
+        - activity-controller
+      summary: Unsubscribe from TG channel activity updates
+      description: Allows a user to unsubscribe from activity updates for a specific store
+      operationId: deleteChannelSubscription
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            maxLength: 24
+            minLength: 24
+            type: string
+      responses:
+        '200':
+          description: Successfully unsubscribed from store activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+  /tg/activity/{store_id}/subscribe:
+    get:
+      tags:
+        - activity-controller
+      summary: Get subscribe status for store_id
+      description: Allows to get user subscribe status for a store
+      operationId: isSubscribe
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            maxLength: 24
+            minLength: 24
+            type: string
+      responses:
+        '200':
+          description: Successfully get subscribe status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsSubscribeResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - activity-controller
+      summary: Subscribe to TG channel activity updates
+      description: Allows a user to subscribe to activity updates for a specific store
+      operationId: addChannelSubscription
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            maxLength: 24
+            minLength: 24
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivitySubscriptionBody'
+        required: true
+      responses:
+        '200':
+          description: Successfully subscribed to store activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+  /tg/activity/{store_id}:
+    get:
+      tags:
+        - activity-controller
+      summary: Get Info about exchange rates on specific store
+      description: Retrieves info about specific store that present in data base
+      operationId: getStoreExchangeRates
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            maxLength: 24
+            minLength: 24
+            type: string
+      responses:
+        '200':
+          description: Info about exchange rates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStoreExchangeRate'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+  /tg/activity/subscriptions:
+    get:
+      tags:
+        - activity-controller
+      summary: Get list of TG channel subscriptions
+      description: >-
+        Retrieves a list of all stores to which the user is subscribed,
+        including store ID, TG chat ID, and activity tracking settings
+      operationId: getSubscriptions
+      responses:
+        '200':
+          description: List of subscribed stores retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatDto'
+        '401':
+          description: Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    ChatDto:
+      required:
+        - boost_time_wait
+        - comment_time_wait
+        - per_boost_points
+        - per_comment_points
+        - store_id
+        - tg_channel_id
+        - tg_chat_id
+      type: object
+      properties:
+        store_id:
+          maxLength: 24
+          minLength: 24
+          type: string
+          description: Store ID from Store service.
+          example: '123456789012345678901234'
+        tg_chat_id:
+          type: integer
+          description: The Telegram chat ID (supergroup) of the blogger
+          format: int64
+          example: 123456789
+        tg_channel_id:
+          type: integer
+          description: The Telegram channel ID of the blogger
+          format: int64
+          example: 1233455543
+        comment_time_wait:
+          maximum: 168
+          minimum: 0
+          type: integer
+          description: >-
+            The waiting time before comments are credited (in hours, must be
+            between 1 and 168).
+          format: int32
+          example: 2
+        per_comment_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per comment (must be greater than 0)
+          format: int32
+          example: 2
+        boost_time_wait:
+          maximum: 168
+          minimum: 0
+          type: integer
+          description: >-
+            The waiting time before boosts are credited (in hours, must be
+            between 1 and 168)
+          format: int32
+          example: 1
+        per_boost_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per boost (must be greater than 0)
+          format: int32
+          example: 100
+    DetailResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          example: detailed explain of result
+    ActivitySubscriptionBody:
+      type: object
+      properties:
+        tg_user_id:
+          type: integer
+          description: Telegram user ID of the subscriber
+          format: int64
+          example: 987654321
+    ChatDtoNullable:
+      required:
+        - boost_time_wait
+        - comment_time_wait
+        - per_boost_points
+        - per_comment_points
+        - store_id
+        - tg_channel_id
+        - tg_chat_id
+      type: object
+      properties:
+        store_id:
+          maxLength: 24
+          minLength: 24
+          type: string
+          description: Store ID from Store service.
+          example: '123456789012345678901234'
+        tg_chat_id:
+          type: integer
+          description: The Telegram chat ID (supergroup) of the blogger
+          format: int64
+          example: 123456789
+        tg_channel_id:
+          type: integer
+          description: The Telegram channel ID of the blogger
+          format: int64
+          example: 1233455543
+        comment_time_wait:
+          maximum: 168
+          minimum: 0
+          type: integer
+          description: >-
+            The waiting time before comments are credited (in hours, must be
+            between 1 and 168).
+          format: int32
+          example: 2
+        per_comment_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per comment (must be greater than 0)
+          format: int32
+          example: 2
+        boost_time_wait:
+          maximum: 168
+          minimum: 0
+          type: integer
+          description: >-
+            The waiting time before boosts are credited (in hours, must be
+            between 1 and 168)
+          format: int32
+          example: 1
+        per_boost_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per boost (must be greater than 0)
+          format: int32
+          example: 100
+    ResponseStoreExchangeRate:
+      required:
+        - per_boost_points
+        - per_comment_points
+      type: object
+      properties:
+        per_comment_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per comment (must be greater than 0)
+          format: int32
+          example: 2
+        per_boost_points:
+          minimum: 1
+          type: integer
+          description: FanfCoin awarded per boost (must be greater than 0)
+          format: int32
+          example: 100
+    IsSubscribeResponse:
+      required:
+        - is_subscribe
+      type: object
+      properties:
+        is_subscribe:
+          type: boolean
+          description: True if user is subscribed to given channel.
+          example: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: JWT Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: JWT

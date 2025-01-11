@@ -1,0 +1,46 @@
+@use '../../styles/common.scss';
+
+.preloader {
+	@include common.default-preloader;
+}
+
+.wrapper {
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 100vh;
+	min-width: 400px;
+	flex-shrink: 0;
+
+	.content {
+		padding-top: 24px;
+		padding-left: 5%;
+		padding-right: 5%;
+		width: 100%;
+
+		.ordersHeader {
+			padding-top: 40px;
+			font-family: common.$default-font-family;
+			font-size: 60px;
+		}
+
+		.activeOrdersHeader {
+			padding-top: 20px;
+			font-family: common.$default-font-family;
+			font-size: 44px;
+		}
+
+		.archiveOrdersHeader {
+			padding-top: 20px;
+			font-family: common.$default-font-family;
+			font-size: 44px;
+		}
+
+		.cardWrapper {
+			padding-top: 40px;
+		}
+
+		footer {
+			height: 32px;
+		}
+	}
+}

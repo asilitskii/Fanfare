@@ -1,0 +1,15 @@
+@use '../../../styles/common.scss';
+
+.productGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	grid-gap: 32px;
+	grid-auto-flow: dense;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	width: 100%;
+	background-color: #efcefa;
+	border-radius: 10px;
+	padding: 25px 85px;
+	gap: 25px 40px;
+}

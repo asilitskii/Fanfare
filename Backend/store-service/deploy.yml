@@ -1,0 +1,45 @@
+services:
+  store-mongodb:
+    image: mongo
+    container_name: store-mongodb
+    expose:
+      - "27017"
+    env_file:
+      - .env
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+      - internal-backend-network
+
+  store-s3:
+    image: minio/minio
+    container_name: store-s3
+    expose:
+      - "9000"
+      - "9001"
+    env_file:
+      - .env
+    command: server /data --console-address ":9001"
+    restart: always
+    volumes:
+      - ./minio-data:/data
+    networks:
+      - internal-backend-network
+
+  store-service:
+    build:
+      context: .
+    container_name: store-service
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - store-mongodb
+      - store-s3
+    networks:
+      - internal-backend-network
+
+networks:
+  internal-backend-network:
+    external: true

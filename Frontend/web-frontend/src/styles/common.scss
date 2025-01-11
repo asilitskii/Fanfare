@@ -1,0 +1,222 @@
+$main-header-font-family: 'Lilita One', serif;
+$default-font-family: 'Alegreya SC';
+$default-font-family-sans: 'Alegreya Sans SC';
+$default-buttons-text-color: #19094a;
+$default-buttons-background-color: #d8eaf6;
+$headers-color: #19094a;
+$default-placeholder-color: #aeaeb2;
+$error-color: #f00;
+$cancel-button-color: #f2e1f8;
+$disabled-background-button-color: #cfcfcf;
+$default-shadows: drop-shadow(0 0 12.68px #fff) drop-shadow(0 0 15.36px #fff);
+$linear-gradient-background: linear-gradient(90deg, #e9b3ff 0%, #6180ff 100%);
+$radial-gradient-background: radial-gradient(57.56% 57.56% at 50% 50%, #e9b2ff 0%, #cc73f0 100%);
+$dark-blue: #19094a;
+$gray: #676767;
+$white-gray: #8e8e93;
+$dark-blue-gray: #695e8c;
+$lilian: #efcefa;
+
+@mixin default-header($font-size) {
+	font-family: $main-header-font-family;
+	color: $headers-color;
+
+	h1 {
+		font-size: $font-size;
+		text-align: center;
+		font-weight: normal;
+		filter: $default-shadows;
+	}
+}
+
+@mixin default-button(
+	$height,
+	$radius: 44px,
+	$text-color: $default-buttons-text-color,
+	$background-color: $default-buttons-background-color
+) {
+	font-family: $default-font-family;
+	color: $text-color;
+	background: $background-color;
+	border-radius: $radius;
+	border-width: 0;
+	cursor: pointer;
+	text-align: center;
+	height: $height;
+}
+
+@mixin number-in-circle($circleColor, $width, $textColor, $fontSize, $fontFamily) {
+	display: flex;
+	width: $width;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	border: 2px solid $circleColor;
+	background-color: $circleColor;
+	font-family: $fontFamily;
+	font-size: $fontSize;
+	color: $textColor;
+}
+
+@mixin no-overflow {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@mixin default-input-box($height) {
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	align-items: center;
+	height: $height;
+	width: 100%;
+	margin-bottom: 2%;
+	font-family: $default-font-family;
+
+	.checkbox {
+		width: 90%;
+		display: flex;
+		justify-content: start;
+		align-items: center;
+
+		h3 {
+			margin: auto auto auto 8%;
+		}
+
+		input {
+			min-width: 30px;
+			min-height: 30px;
+		}
+	}
+
+	%input {
+		background-color: white;
+		border-radius: 15px;
+		border-width: 0;
+		min-height: calc($height - 27px);
+		width: 90%;
+		padding: 0 2%;
+		font-size: 0.375em;
+
+		&::placeholder {
+			color: $default-placeholder-color;
+			text-align: left;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.input {
+		@extend %input;
+	}
+
+	.noSpinner {
+		@extend %input;
+
+		/* Chrome, Safari, Edge, Opera */
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			appearance: none;
+			margin: 0;
+		}
+
+		/* Firefox */
+		&[type='number'] {
+			appearance: textfield;
+		}
+	}
+
+	textarea {
+		resize: none;
+		padding-block: 10px !important;
+	}
+
+	.error {
+		width: 90%;
+		padding: 0 2%;
+		font-size: 0.3em;
+		color: $error-color;
+	}
+}
+
+@mixin small-input-box($height) {
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+	align-items: end;
+	min-height: $height;
+	width: 100%;
+	font-family: $default-font-family;
+
+	.input {
+		background-color: white;
+		border-radius: 15px;
+		border-width: 0;
+		min-height: calc($height - 22px);
+		width: 15%;
+		padding: 0 2%;
+		font-size: 1em;
+
+		&::placeholder {
+			color: $default-placeholder-color;
+			text-align: left;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.error {
+		margin: 0;
+		width: 100%;
+		padding: 0 5%;
+		font-size: 0.25em;
+		color: $error-color;
+	}
+
+	label {
+		width: 100%;
+		display: flex;
+		justify-content: start;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		padding: 0 5%;
+		font-size: 0.3em;
+
+		:first-child {
+			width: 50%;
+		}
+	}
+}
+
+@mixin show-few-lines-with-no-overflow(
+	$font-size,
+	$lines-count,
+	$line-height,
+	$break-type: break-all
+) {
+	font-size: $font-size;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $lines-count;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: $line-height * $lines-count;
+	line-height: $line-height;
+	word-break: $break-type;
+	text-align: start;
+}
+
+@mixin default-preloader {
+	min-height: 100vh;
+	min-width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

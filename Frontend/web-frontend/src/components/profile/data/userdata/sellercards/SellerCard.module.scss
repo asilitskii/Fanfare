@@ -1,0 +1,52 @@
+@use '../../../../../styles/common.scss';
+
+.wrapper {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	gap: 24px;
+
+	.element {
+		padding-left: 6px;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-items: center;
+		border-width: 0;
+		border-radius: 10px;
+		background-color: common.$lilian;
+		box-shadow: 0 4px 4px 0 #00000040;
+		font-size: 20px;
+		height: 32px;
+		width: fit-content;
+
+		.image {
+			display: flex;
+			justify-content: center;
+			margin-left: 12px;
+			margin-right: 6px;
+
+			img {
+				width: 28px;
+				height: 28px;
+			}
+		}
+
+		.text {
+			font-size: 1em;
+			font-family: common.$default-font-family;
+			color: common.$dark-blue;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+@media (width < 1150px) {
+	.wrapper {
+		flex-flow: column;
+		justify-content: flex-start;
+	}
+}

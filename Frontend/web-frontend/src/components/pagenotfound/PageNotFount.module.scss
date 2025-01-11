@@ -1,0 +1,26 @@
+@use '../../styles/common.scss';
+
+.wrapper {
+	font-family: common.$default-font-family;
+	font-size: 30px;
+	line-height: 40px;
+	color: #857d9f;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	h1 {
+		font-size: 280px;
+		line-height: 380px;
+		color: #19094a;
+		font-weight: 400;
+	}
+
+	.errorName {
+		font-size: 44px;
+		line-height: 60px;
+		color: #19094a;
+		margin-bottom: 80px;
+	}
+}

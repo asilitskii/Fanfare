@@ -1,0 +1,9 @@
+@use '../../../styles/common.scss';
+
+.logo {
+	@include common.default-header(64px);
+
+	padding-top: 0.5em;
+	width: 100%;
+	margin: auto;
+}

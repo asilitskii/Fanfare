@@ -1,0 +1,738 @@
+components:
+  schemas:
+    CreateUserSellerRequestModel:
+      properties:
+        comment:
+          anyOf:
+          - maxLength: 200
+            type: string
+          - type: 'null'
+          title: Comment
+      title: CreateUserSellerRequestModel
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    NewPasswordRequestModel:
+      properties:
+        new_password:
+          maxLength: 64
+          minLength: 8
+          title: New Password
+          type: string
+      required:
+      - new_password
+      title: NewPasswordRequestModel
+      type: object
+    ReturnCreateUserSellerRequestModel:
+      properties:
+        id:
+          format: uuid4
+          title: Id
+          type: string
+      required:
+      - id
+      title: ReturnCreateUserSellerRequestModel
+      type: object
+    ReturnDetailModel:
+      properties:
+        detail:
+          title: Detail
+          type: string
+      required:
+      - detail
+      title: ReturnDetailModel
+      type: object
+    ReturnFoundUserByIdModel:
+      properties:
+        detail:
+          title: Detail
+          type: string
+        is_seller:
+          title: Is Seller
+          type: boolean
+      required:
+      - detail
+      - is_seller
+      title: ReturnFoundUserByIdModel
+      type: object
+    ReturnFoundUserModel:
+      properties:
+        detail:
+          title: Detail
+          type: string
+        is_seller:
+          title: Is Seller
+          type: boolean
+        user_id:
+          format: uuid4
+          title: User Id
+          type: string
+      required:
+      - detail
+      - user_id
+      - is_seller
+      title: ReturnFoundUserModel
+      type: object
+    SellerRequestStatus:
+      enum:
+      - no_data
+      - requested
+      - rejected
+      title: SellerRequestStatus
+      type: string
+    TgIdUpdateModel:
+      properties:
+        tg_id:
+          minimum: 1.0
+          title: Tg Id
+          type: integer
+      required:
+      - tg_id
+      title: TgIdUpdateModel
+      type: object
+    UserCreationModel:
+      properties:
+        birthdate:
+          format: date
+          title: Birthdate
+          type: string
+        email:
+          format: email
+          title: Email
+          type: string
+        first_name:
+          maxLength: 30
+          minLength: 2
+          title: First Name
+          type: string
+        last_name:
+          maxLength: 30
+          minLength: 2
+          title: Last Name
+          type: string
+        password:
+          maxLength: 64
+          minLength: 8
+          title: Password
+          type: string
+      required:
+      - birthdate
+      - email
+      - password
+      - first_name
+      - last_name
+      title: UserCreationModel
+      type: object
+    UserInfoModel:
+      properties:
+        birthdate:
+          format: date
+          title: Birthdate
+          type: string
+        created_at:
+          description: Date when the user was created
+          format: date-time
+          title: Created At
+          type: string
+        email:
+          format: email
+          title: Email
+          type: string
+        first_name:
+          maxLength: 30
+          minLength: 2
+          title: First Name
+          type: string
+        is_seller:
+          title: Is Seller
+          type: boolean
+        last_name:
+          maxLength: 30
+          minLength: 2
+          title: Last Name
+          type: string
+        seller_request_status:
+          $ref: '#/components/schemas/SellerRequestStatus'
+          description: Status of the request
+        tg_id:
+          anyOf:
+          - minimum: 1.0
+            type: integer
+          - type: 'null'
+          title: Tg Id
+        updated_at:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          description: Date when the user was last updated
+          title: Updated At
+        vk_id:
+          anyOf:
+          - minimum: 1.0
+            type: integer
+          - type: 'null'
+          title: Vk Id
+      required:
+      - first_name
+      - last_name
+      - birthdate
+      - email
+      - seller_request_status
+      - is_seller
+      - vk_id
+      - tg_id
+      - created_at
+      - updated_at
+      title: UserInfoModel
+      type: object
+    UserPasswordUpdateModel:
+      properties:
+        new_password:
+          maxLength: 64
+          minLength: 8
+          title: New Password
+          type: string
+        old_password:
+          maxLength: 64
+          minLength: 8
+          title: Old Password
+          type: string
+      required:
+      - old_password
+      - new_password
+      title: UserPasswordUpdateModel
+      type: object
+    UserUpdateModel:
+      properties:
+        birthdate:
+          anyOf:
+          - format: date
+            type: string
+          - type: 'null'
+          title: Birthdate
+        first_name:
+          anyOf:
+          - maxLength: 30
+            minLength: 2
+            type: string
+          - type: 'null'
+          title: First Name
+        last_name:
+          anyOf:
+          - maxLength: 30
+            minLength: 2
+            type: string
+          - type: 'null'
+          title: Last Name
+      title: UserUpdateModel
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    VkIdUpdateModel:
+      properties:
+        vk_id:
+          minimum: 1.0
+          title: Vk Id
+          type: integer
+      required:
+      - vk_id
+      title: VkIdUpdateModel
+      type: object
+  securitySchemes:
+    OAuth2PasswordBearer:
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: ''
+      type: oauth2
+info:
+  title: FastAPI
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /users:
+    post:
+      description: Registers a new user with the specified data and, if successful,
+        sends an email to confirm the account
+      operationId: post_create_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreationModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Sends an email to verify the account
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create User
+  /users/edit:
+    patch:
+      operationId: patch_edit_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Successfully edited
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Edit User Data
+  /users/edit-pass:
+    patch:
+      operationId: patch_edit_user_password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPasswordUpdateModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Successfully edited
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Wrong old password
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Edit User Password
+  /users/find:
+    get:
+      description: Searches for a registered user with a verified account by email
+        and password
+      operationId: get_find_verified_user
+      parameters:
+      - in: query
+        name: email
+        required: true
+        schema:
+          format: email
+          title: Email
+          type: string
+      - in: query
+        name: password
+        required: true
+        schema:
+          title: Password
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnFoundUserModel'
+          description: User found
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: User not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Find Verified User
+      tags:
+      - internal
+  /users/find/{user_id}:
+    get:
+      description: Searches for a registered user with a verified account by id
+      operationId: get_find_verified_user_by_id
+      parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          format: uuid4
+          title: User Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnFoundUserByIdModel'
+          description: User found
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: User nof found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Find Verified User By Id
+      tags:
+      - internal
+  /users/me:
+    get:
+      operationId: get_me_info
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoModel'
+          description: Success
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Get Current User Info
+  /users/reset-password:
+    post:
+      description: Sends an email to current user to reset the password
+      operationId: post_send_reset_password_email_with_code
+      parameters:
+      - in: query
+        name: email
+        required: true
+        schema:
+          format: email
+          title: Email
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Email successfully sent or user with this email not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Start Password Reset
+  /users/reset-password/{code}:
+    post:
+      operationId: post_reset_password_completion_with_code
+      parameters:
+      - in: path
+        name: code
+        required: true
+        schema:
+          format: uuid4
+          title: Code
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPasswordRequestModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Password successfully reset
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Invalid code
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Reset Password
+  /users/seller-status:
+    post:
+      description: Create a request to the admin for becoming a seller.This request
+        will initiate the process of verifying and approving the user's seller status
+      operationId: post_seller_status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserSellerRequestModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnCreateUserSellerRequestModel'
+          description: Successfully created request
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: User already seller
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '424':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Pending request already exists
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Request Seller Status
+      tags:
+      - seller status
+  /users/social-links/tg:
+    delete:
+      operationId: delete_user_tg_id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Deleting successful
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: User doesn't have Telegram ID
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Delete Telegram Id
+      tags:
+      - social links
+    patch:
+      operationId: patch_update_user_tg_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TgIdUpdateModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Successful update
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Somebody already uses this Telegram ID
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Update Telegram Id
+      tags:
+      - social links
+  /users/social-links/vk:
+    delete:
+      operationId: delete_user_vk_id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Deleting successful
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: User doesn't have VK ID
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Delete Vk Id
+      tags:
+      - social links
+    patch:
+      operationId: patch_update_user_vk_id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VkIdUpdateModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Successful update
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Somebody already uses this VK ID
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Unauthorized
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Update Vk Id
+      tags:
+      - social links
+  /users/verify-email/{code}:
+    post:
+      description: Finishes user registration. Verify email = verify user
+      operationId: post_verify_email_with_code
+      parameters:
+      - in: path
+        name: code
+        required: true
+        schema:
+          format: uuid4
+          title: Code
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Email verified
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnDetailModel'
+          description: Invalid code
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Verify Email

@@ -1,0 +1,95 @@
+@use 'sass:math';
+@use '../../../styles/common';
+
+.wrapper {
+	font-size: 64px;
+
+	.columns {
+		padding: 0 40px;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		margin-top: 1%;
+	}
+
+	h2 {
+		color: common.$headers-color;
+		font-size: 1em;
+		text-align: center;
+		font-weight: normal;
+		font-family: common.$default-font-family-sans;
+	}
+
+	h3 {
+		text-align: left;
+		margin: 2% auto auto 8%;
+		width: fit-content;
+		color: common.$headers-color;
+		font-size: 0.5em;
+		font-weight: normal;
+		font-family: common.$default-font-family;
+	}
+
+	.inputBox {
+		@include common.default-input-box(75px);
+	}
+
+	.checkboxBox {
+		@include common.default-input-box(30px);
+	}
+
+	.inputTextAreaBox {
+		@include common.default-input-box(500px);
+	}
+
+	.smallInputBox {
+		@include common.small-input-box(50px);
+	}
+
+	.inputWithTip {
+		display: flex;
+		justify-content: start;
+		align-items: center;
+	}
+
+	.error {
+		float: left;
+		margin-top: 2%;
+		padding-left: 2%;
+		font-size: 0.3em;
+		color: common.$error-color;
+	}
+
+	footer {
+		display: flex;
+		justify-content: space-between;
+		gap: 4px;
+		margin: 50px auto 10px;
+		font-size: 0.58em;
+		width: 30%;
+		min-width: fit-content;
+
+		button {
+			@include common.default-button(45px);
+
+			width: 42%;
+			padding: 4px;
+			min-width: fit-content;
+			text-wrap: nowrap;
+			font-size: 0.58em;
+		}
+
+		.createBtn {
+			&:disabled {
+				background-color: common.$disabled-background-button-color;
+			}
+		}
+
+		.cancelBtn {
+			background-color: common.$cancel-button-color;
+		}
+	}
+}
+
+.subform {
+	margin-bottom: 6%;
+}

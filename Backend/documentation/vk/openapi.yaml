@@ -1,0 +1,420 @@
+openapi: 3.0.0
+info:
+  title: Fanflow VK Store API
+  description: "API for managing a store linked to a blogger, tracking user engagement, and awarding FanfCoin. Token always valid, because api gateway proxy token through auth/validate"
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+
+paths:
+  /activity:
+    post:
+      summary: Create VK group activity collection for a store
+      description: Creates a store for a blogger with settings for awarding FanfCoin for comments and likes
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - store_id
+                - vk_token
+                - comment_time_wait
+                - per_comment_points
+                - like_time_wait
+                - per_like_points
+
+              properties:
+                store_id:
+                  type: string
+                  description: Store ID from Store service.
+                  example: 672e5840a42de01e6a6c7a19
+                vk_token:
+                  type: string
+                  description: The VK access token for the group.
+                  example: "1298adqwelqwepqwel"
+                comment_time_wait:
+                  type: integer
+                  description: Waiting time before comments are credited (in hours, 1-168).
+                  example: 2
+                  minimum: 1
+                  maximum: 168
+                per_comment_points:
+                  type: number
+                  description: FanfCoin awarded per comment (must be > 0).
+                  example: 2.5
+                  minimum: 0.1
+                like_time_wait:
+                  type: integer
+                  description: Waiting time before likes are credited (in hours, 1-168).
+                  example: 1
+                  minimum: 1
+                  maximum: 168
+                per_like_points:
+                  type: number
+                  description: FanfCoin awarded per like (must be > 0).
+                  example: 1.0
+                  minimum: 0.1
+
+      responses:
+        '201':
+          description: Store created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OkResponse:
+                  value:
+                    detail: ok
+
+        '400':
+          description: Validation error or store already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                alreadyExists:
+                  value:
+                    detail: Store already exists.
+                validationError:
+                  value:
+                    detail: Invalid input data.
+        '401':
+          description: Unauthorized request. Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing.
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                PermissionDenied:
+                  value:
+                    detail: User is not seller
+
+    patch:
+      summary: Update VK group activity collection settings
+      description: Updates the FanfCoin award likes and comment waiting time for a store
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - store_id
+              properties:
+                store_id:
+                  type: string
+                  description: Store ID from Store service.
+                  example: 672e5840a42de01e6a6c7a19
+                vk_token:
+                  type: string
+                  description: The VK access token for the group.
+                  example: "1298adqwelqwepqwel"
+                comment_time_wait:
+                  type: integer
+                  description: Waiting time before comments are credited (in hours, 1-168).
+                  example: 2
+                  minimum: 1
+                  maximum: 168
+                per_comment_points:
+                  type: number
+                  description: FanfCoin awarded per comment (must be > 0).
+                  example: 2.5
+                  minimum: 0.1
+                like_time_wait:
+                  type: integer
+                  description: Waiting time before likes are credited (in hours, 1-168).
+                  example: 1
+                  minimum: 1
+                  maximum: 168
+                per_like_points:
+                  type: number
+                  description: FanfCoin awarded per like (must be > 0).
+                  example: 1.0
+                  minimum: 0.1
+      responses:
+        '200':
+          description: Store settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OkResponse:
+                  value:
+                    detail: ok
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validationError:
+                  value:
+                    detail: Store not found
+                InputDataError:
+                  value:
+                    detail: Invalid input data.
+        '401':
+          description: Unauthorized request. Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                PermissionDenied:
+                  value:
+                    detail: User is not owner this store
+
+    delete:
+      summary: Stop VK group activity tracking in store
+      description: Stops tracking activity for the specified store.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: store_id
+          in: query
+          required: true
+          schema:
+            type: string
+            description: The store's ID.
+            example: 672e5840a42de01e6a6c7a19
+      responses:
+        '200':
+          description: Activity tracking stopped successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OkResponse:
+                  value:
+                    detail: ok
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validationError:
+                  value:
+                    detail: Invalid store ID
+        '401':
+          description: Unauthorized request. Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                permissionDenied:
+                  value:
+                    detail: User is not owner this store
+
+  /activity/{store_id}/subscribe:
+    post:
+      summary: Subscribe to VK group activity updates
+      description: Allows a user to subscribe to activity updates for a specific store.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The store's ID.
+            example: 672e5840a42de01e6a6c7a19
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vk_user_id:
+                  type: integer
+                  description: Telegram user ID of the subscriber
+                  example: 987654321
+                  minimum: 1
+      responses:
+        '200':
+          description: Successfully subscribed to store activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OkResponse:
+                  value:
+                    detail: ok
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validationError:
+                  value:
+                    detail: Invalid store ID
+        '401':
+          description: Auth token is missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing
+
+  /activity/{store_id}/unsubscribe:
+    post:
+      summary: Unsubscribe from VK group activity updates
+      description: Allows a user to unsubscribe from activity updates for a specific store.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: The store's ID.
+            example: 672e5840a42de01e6a6c7a19
+      responses:
+        '200':
+          description: Successfully unsubscribed from store activity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OkResponse:
+                  value:
+                    detail: ok
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validationError:
+                  value:
+                    detail: Invalid store ID or User not subscribed before
+        '401':
+          description: Unauthorized request. Invalid or missing access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing
+
+  /activity/subscriptions:
+    get:
+      summary: Get list of VK channel subscriptions
+      description: Retrieves a list of all stores to which the user is subscribed, including store ID, TG chat ID, and activity tracking settings
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of subscribed stores retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    store_id:
+                      type: string
+                      description: The store's ID
+                      example: 672e5840a42de01e6a6c7a19
+                    comment_time_wait:
+                      type: integer
+                      description: Waiting time before comments are credited (in hours, 1-168).
+                      example: 2
+                      minimum: 1
+                      maximum: 168
+                    per_comment_points:
+                      type: number
+                      description: FanfCoin awarded per comment (must be > 0).
+                      example: 2.5
+                      minimum: 0.1
+                    like_time_wait:
+                      type: integer
+                      description: Waiting time before likes are credited (in hours, 1-168).
+                      example: 1
+                      minimum: 1
+                      maximum: 168
+                    per_like_points:
+                      type: number
+                      description: FanfCoin awarded per like (must be > 0).
+                      example: 1.0
+                      minimum: 0.1
+
+        '401':
+          description: Unauthorized request. Invalid or missing access token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                AuthError:
+                  value:
+                    detail: Auth token is missing

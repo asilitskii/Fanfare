@@ -1,0 +1,12 @@
+services:
+ web-frontend:
+  build: .
+  container_name: frontend
+  environment:
+   - NODE_ENV=production
+  networks:
+    - internal-frontend-network
+
+networks:
+  internal-frontend-network:
+    external: true

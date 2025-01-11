@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: store-service
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: ${MONGO_PORT}
+      database: ${MONGO_DATABASE_NAME}
+      username: ${MONGO_INITDB_ROOT_USERNAME}
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
+      authentication-database: admin
+      auto-index-creation: true
+  servlet:
+    multipart:
+      max-file-size: ${MULTIPART_FILE_MAX_SIZE}
+      max-request-size: ${REQUEST_MAX_SIZE}
+  minio:
+    access-key: ${MINIO_ROOT_USER}
+    secret-key: ${MINIO_ROOT_PASSWORD}
+    url: http://${MINIO_CONNECT_HOST}:${MINIO_CONNECT_PORT}
+    products-bucket-name: ${MINIO_PRODUCTS_BUCKET_NAME}
+    stores-bucket-name: ${MINIO_STORES_BUCKET_NAME}
+    image-url-prefix: ${MINIO_IMAGE_URL_PREFIX}
+
+
+server:
+  port: ${SERVER_PORT}
+springdoc:
+  swagger-ui:
+    path: /docs

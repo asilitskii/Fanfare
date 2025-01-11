@@ -1,0 +1,31 @@
+services:
+  auth-mongodb:
+    image: mongo
+    container_name: auth-mongodb
+    expose:
+      - "27017"
+    volumes:
+      - ./mongo-data:/data/db
+    env_file:
+      - .env
+    networks:
+      - internal-backend-network
+
+  auth-service:
+    build:
+      context: .
+    container_name: auth-service
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@auth-mongodb:27017
+    depends_on:
+      - auth-mongodb
+    networks:
+      - internal-backend-network
+
+networks:
+  internal-backend-network:
+    external: true

@@ -1,0 +1,86 @@
+@use '../../../../../styles/common';
+
+.wrapper {
+	display: flex;
+	flex-flow: column nowrap;
+
+	.nameAndLetterWrapper {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+
+		.letterBlock {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.nameBlock {
+			padding-left: 5%;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			width: 100%;
+			font-family: common.$default-font-family;
+
+			@include common.no-overflow;
+
+			color: common.$dark-blue;
+			font-size: 24px;
+		}
+	}
+
+	.dataBlock {
+		width: 100%;
+		font-size: 26px;
+		display: flex;
+		flex: 1 auto;
+		flex-flow: column nowrap;
+		font-family: common.$default-font-family;
+		color: common.$dark-blue;
+
+		.emailBlock {
+			padding-top: 0.1em;
+			width: 100%;
+
+			@include common.no-overflow;
+
+			.emailSpan {
+				color: common.$dark-blue-gray;
+			}
+		}
+
+		.editBlock {
+			padding-top: 0.1em;
+			font-size: 1.2em;
+			color: common.$dark-blue-gray;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: flex-start;
+
+			img {
+				padding-left: 16px;
+				width: 1.2em;
+				height: 1.2em;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}
+
+.numberInCircle {
+	@include common.number-in-circle(
+		#c9b9fc,
+		1.5em,
+		common.$dark-blue,
+		56px,
+		common.$default-font-family
+	);
+}
+
+.noOverflow {
+	@include common.no-overflow;
+}

@@ -1,0 +1,19 @@
+.wrapper {
+	font-size: 18px;
+	margin-left: 8%;
+
+	.inputBox {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+		margin-bottom: 2%;
+
+		.icon {
+			cursor: pointer;
+		}
+
+		.error {
+			color: red;
+		}
+	}
+}

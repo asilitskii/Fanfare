@@ -1,0 +1,1381 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/stores/{store_id}/logo": {
+      "put": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Update Store Logo",
+        "operationId": "updateStoreLogo",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "logo"
+                ],
+                "type": "object",
+                "properties": {
+                  "logo": {
+                    "type": "string",
+                    "description": "The logo image file (PNG, JPEG, SVG or WEBP) - max 10MB",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store logo was updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoUpdatedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "File format is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File is too large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/products/{product_id}/logo": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update Product Logo",
+        "operationId": "updateProductLogo",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439042"
+            },
+            "example": "507f1f77bcf86cd799439042"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "logo"
+                ],
+                "type": "object",
+                "properties": {
+                  "logo": {
+                    "type": "string",
+                    "description": "The logo image file (PNG, JPEG, SVG or WEBP) - max 10MB",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product logo was updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogoUpdatedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "File format is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "File is too large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/stores": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get Store List",
+        "operationId": "getStoreList",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Store name"
+            },
+            "example": "Store name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of stores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreShortInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Create Store",
+        "operationId": "createStore",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStoreModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Store successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreCreatedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Title already taken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get Product List",
+        "operationId": "getProductList",
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store is found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductShortInfo"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create Product",
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Product successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCreatedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/stores/{store_id}": {
+      "patch": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Update Store",
+        "operationId": "updateStore",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStoreModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Store successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Title already taken",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/products/{product_id}": {
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update Product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439042"
+            },
+            "example": "507f1f77bcf86cd799439042"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Product successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/stores/{store_id}/short": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get Store Short Info",
+        "operationId": "getStoreInfoShort",
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store is found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreShortInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{store_id}/is-owner": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Is Store Owner",
+        "operationId": "isStoreOwner",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Check was completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IsOwnerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/stores/{store_id}/is-owner-by-user-id": {
+      "get": {
+        "tags": [
+          "Internal"
+        ],
+        "summary": "Is Store Owner By User Id",
+        "operationId": "isStoreOwnerByUserId",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1522fd63-32d3-471c-9aa1-764e96dc0ef5"
+            },
+            "example": "1522fd63-32d3-471c-9aa1-764e96dc0ef5"
+          },
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Check was completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IsOwnerResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{store_id}/full": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get Store Full Info",
+        "operationId": "getStoreInfoFull",
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439044"
+            },
+            "example": "507f1f77bcf86cd799439044"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store is found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreFullInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Store is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/my": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "summary": "Get My Stores",
+        "operationId": "getMyStores",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stores are found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreShortInfo"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Permission denied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/stores/by-owner-id": {
+      "get": {
+        "tags": [
+          "Internal"
+        ],
+        "summary": "Stores List By User Id",
+        "operationId": "storesListByUserId",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1522fd63-32d3-471c-9aa1-764e96dc0ef5"
+            },
+            "example": "1522fd63-32d3-471c-9aa1-764e96dc0ef5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stores list returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreIdModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{product_id}/short": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get Product Short Info",
+        "operationId": "getProductInfoShort",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439042"
+            },
+            "example": "507f1f77bcf86cd799439042"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product is found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductShortInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{product_id}/full": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get Product Full Info",
+        "operationId": "getProductInfoFull",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439042"
+            },
+            "example": "507f1f77bcf86cd799439042"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product is found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductFullInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Product is not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LogoUpdatedResponse": {
+        "required": [
+          "logo_url"
+        ],
+        "type": "object",
+        "properties": {
+          "logo_url": {
+            "type": "string",
+            "description": "Logo image",
+            "format": "uri",
+            "example": "https://i.pinimg.com/736x/5a/38/a6/5a38a6077eb3115b5ab1da7825d80032.jpg"
+          }
+        }
+      },
+      "DetailResponse": {
+        "required": [
+          "detail"
+        ],
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "example": "detailed explanation of result"
+          }
+        }
+      },
+      "StoreCreatedResponse": {
+        "required": [
+          "store_id"
+        ],
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "Id of the store",
+            "example": "507f1f77bcf86cd799439044"
+          }
+        }
+      },
+      "CreateStoreModel": {
+        "required": [
+          "description",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the store",
+            "example": "Store title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store",
+            "example": "Store description"
+          }
+        }
+      },
+      "ProductCreatedResponse": {
+        "required": [
+          "product_id"
+        ],
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "description": "Id of the product",
+            "example": "507f1f77bcf86cd799439042"
+          }
+        }
+      },
+      "Characteristic": {
+        "required": [
+          "name",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the characteristic",
+            "example": "Characteristic name"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value of the characteristic",
+            "example": "Characteristic nam value"
+          }
+        },
+        "description": "Characteristics of the product"
+      },
+      "CreateProductModel": {
+        "required": [
+          "characteristics",
+          "description",
+          "price",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the product",
+            "example": "Product title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the product",
+            "example": "Product description"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Price of the product in kopecks",
+            "format": "int32",
+            "example": 100000
+          },
+          "characteristics": {
+            "type": "array",
+            "description": "Characteristics of the product",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          }
+        }
+      },
+      "UpdateStoreModel": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the store",
+            "example": "Store title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store",
+            "example": "Store description"
+          }
+        }
+      },
+      "UpdateProductModel": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the product",
+            "example": "Product title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the product",
+            "example": "Product description"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Price of the product in kopecks",
+            "format": "int32",
+            "example": 100000
+          },
+          "characteristics": {
+            "type": "array",
+            "description": "Characteristics of the product",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          }
+        }
+      },
+      "StoreShortInfo": {
+        "required": [
+          "store_id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the store",
+            "example": "Store title"
+          },
+          "store_id": {
+            "type": "string",
+            "description": "Id of the store",
+            "example": "507f1f77bcf86cd799439044"
+          },
+          "logo_url": {
+            "type": "string",
+            "description": "Logo image of the store",
+            "format": "uri",
+            "example": "https://i.pinimg.com/736x/5a/38/a6/5a38a6077eb3115b5ab1da7825d80032.jpg"
+          }
+        }
+      },
+      "IsOwnerResponse": {
+        "required": [
+          "owner"
+        ],
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "boolean",
+            "description": "Is the user the owner of the store",
+            "example": true
+          }
+        }
+      },
+      "StoreFullInfo": {
+        "required": [
+          "description",
+          "store_id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the store",
+            "example": "Store title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the store",
+            "example": "Store description"
+          },
+          "store_id": {
+            "type": "string",
+            "description": "Id of the store",
+            "example": "507f1f77bcf86cd799439044"
+          },
+          "logo_url": {
+            "type": "string",
+            "description": "Logo image of the store",
+            "format": "uri",
+            "example": "https://i.pinimg.com/736x/5a/38/a6/5a38a6077eb3115b5ab1da7825d80032.jpg"
+          }
+        }
+      },
+      "StoreIdModel": {
+        "required": [
+          "store_id"
+        ],
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "Id of the store",
+            "example": "507f1f77bcf86cd799439044"
+          }
+        }
+      },
+      "ProductShortInfo": {
+        "required": [
+          "price",
+          "product_id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the product",
+            "example": "Product title"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Price of the product in kopecks",
+            "format": "int32",
+            "example": 100000
+          },
+          "product_id": {
+            "type": "string",
+            "description": "Id of the product",
+            "example": "507f1f77bcf86cd799439042"
+          },
+          "logo_url": {
+            "type": "string",
+            "description": "Image of the product",
+            "format": "uri",
+            "example": "https://i.pinimg.com/736x/5a/38/a6/5a38a6077eb3115b5ab1da7825d80032.jpg"
+          }
+        }
+      },
+      "ProductFullInfo": {
+        "required": [
+          "characteristics",
+          "description",
+          "price",
+          "product_id",
+          "store_id",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the product",
+            "example": "Product title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the product",
+            "example": "Product description"
+          },
+          "price": {
+            "type": "integer",
+            "description": "Price of the product in kopecks",
+            "format": "int32",
+            "example": 100000
+          },
+          "characteristics": {
+            "type": "array",
+            "description": "Characteristics of the product",
+            "items": {
+              "$ref": "#/components/schemas/Characteristic"
+            }
+          },
+          "product_id": {
+            "type": "string",
+            "description": "Id of the product",
+            "example": "507f1f77bcf86cd799439042"
+          },
+          "logo_url": {
+            "type": "string",
+            "description": "Image of the product",
+            "format": "uri",
+            "example": "https://i.pinimg.com/736x/5a/38/a6/5a38a6077eb3115b5ab1da7825d80032.jpg"
+          },
+          "store_id": {
+            "type": "string",
+            "description": "Id of the store in which product is sold",
+            "example": "507f1f77bcf86cd799439044"
+          }
+        }
+      }
+    }
+  }
+}

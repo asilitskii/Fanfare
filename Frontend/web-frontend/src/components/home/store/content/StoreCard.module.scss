@@ -1,0 +1,42 @@
+@use '../../../../styles/common.scss';
+
+.storeCard {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	> * {
+		width: 100%;
+		max-width: 400px;
+		cursor: pointer;
+	}
+}
+
+.storeImage {
+	background-color: white;
+	height: 400px;
+	width: 400px;
+	border-radius: 47px;
+	overflow: hidden;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.storeName {
+	font-family: common.$default-font-family;
+	font-size: 20px;
+	padding: 0 5%;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 60px;
+	line-height: 30px;
+	word-break: break-word;
+	text-align: start;
+}

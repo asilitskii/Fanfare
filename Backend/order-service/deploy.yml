@@ -1,0 +1,36 @@
+services:
+  order-postgres:
+    image: postgres
+    restart: always
+    container_name: order-postgres
+    expose:
+      - "5432"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_USER_DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRES_USER_NAME}
+      POSTGRES_PASSWORD: ${POSTGRES_USER_PASSWORD}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal-backend-network
+
+  order-service:
+    build:
+      context: .
+    container_name: order-service
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - internal-backend-network
+    environment:
+      - POSTGRES_CONNECTION_STRING=postgresql+psycopg2://${POSTGRES_USER_NAME}:${POSTGRES_USER_PASSWORD}@order-postgres:5432/${POSTGRES_USER_DATABASE_NAME}
+    depends_on:
+      - order-postgres
+
+networks:
+  internal-backend-network:
+    external: true

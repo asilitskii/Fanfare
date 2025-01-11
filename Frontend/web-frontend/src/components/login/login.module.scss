@@ -1,0 +1,137 @@
+@use 'sass:math';
+@use '../../styles/common';
+
+.wrapper {
+	min-width: 400px;
+	max-width: 600px;
+	background: common.$radial-gradient-background;
+	font-size: 64px;
+	border-radius: 39px;
+	border-width: medium;
+	border-color: white;
+	border-style: solid;
+
+	h2 {
+		color: common.$headers-color;
+		font-size: 0.75em;
+		padding-top: 2%;
+		text-align: center;
+		font-weight: normal;
+		font-family: common.$default-font-family;
+	}
+
+	.resetPassword {
+		display: flex;
+		justify-content: center;
+		padding-top: 12px;
+
+		a {
+			font-family: common.$default-font-family;
+			font-size: 1.5rem;
+			color: common.$dark-blue;
+			text-decoration: none;
+		}
+	}
+
+	.registerBtn {
+		display: flex;
+		justify-content: center;
+		padding-top: 24px;
+
+		button {
+			@include common.default-button(40px, 39px, #fff, #8e8e93);
+
+			font-size: 1.5rem;
+			padding-left: 0.4em;
+			padding-right: 0.4em;
+
+			a {
+				text-decoration: none;
+				color: #fff;
+			}
+		}
+	}
+
+	.formWrapper {
+		display: flex;
+		flex-flow: column nowrap;
+		flex: 0 auto;
+		align-items: center;
+		width: 100%;
+
+		.inputBlock {
+			display: flex;
+			flex-flow: column nowrap;
+			width: 100%;
+
+			.inputBox {
+				display: flex;
+				flex-flow: column nowrap;
+				width: 100%;
+				padding-bottom: 15px;
+
+				.input {
+					width: 100%;
+					background-color: white;
+					border-radius: 15px;
+					border-width: 0;
+					height: 38px;
+					padding-left: 2%;
+					padding-right: 2%;
+					font-size: 0.375em;
+					font-family: common.$default-font-family;
+
+					&::placeholder {
+						color: common.$default-placeholder-color;
+						text-align: left;
+					}
+
+					&:focus {
+						outline: none;
+					}
+				}
+
+				.error {
+					font-family: common.$default-font-family;
+					font-size: 0.275em;
+					height: 1.5em;
+					color: common.$error-color;
+				}
+
+				&:last-child {
+					padding-bottom: 0;
+				}
+			}
+		}
+
+		.serverMsg {
+			font-size: 0.275em;
+			color: common.$error-color;
+			padding-top: 2%;
+			height: 1.5em;
+			font-family: common.$default-font-family;
+		}
+
+		.loginBtn {
+			display: flex;
+			justify-content: center;
+
+			button {
+				@include common.default-button(60px);
+
+				font-size: 0.6em;
+				padding-left: 0.3em;
+				padding-right: 0.3em;
+				margin-top: 4%;
+
+				&:disabled {
+					background-color: common.$disabled-background-button-color;
+				}
+			}
+		}
+	}
+
+	footer {
+		height: 32px;
+	}
+}

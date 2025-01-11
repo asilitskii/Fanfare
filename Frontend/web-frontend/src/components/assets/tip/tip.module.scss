@@ -1,0 +1,14 @@
+@use '../../../styles/common';
+
+.trigger {
+	cursor: pointer;
+}
+
+.card {
+	max-width: 40vw;
+	padding: 8px;
+	background-color: white;
+	border-radius: 15px;
+	font-family: common.$default-font-family;
+	font-size: 20px;
+}

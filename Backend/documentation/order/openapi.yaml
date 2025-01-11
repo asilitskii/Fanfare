@@ -1,0 +1,661 @@
+components:
+  schemas:
+    AddressModel:
+      properties:
+        apartment:
+          anyOf:
+          - maxLength: 4
+            type: string
+          - type: 'null'
+          title: Apartment
+        city:
+          maxLength: 64
+          minLength: 2
+          title: City
+          type: string
+        house:
+          maxLength: 7
+          title: House
+          type: string
+        postal_code:
+          examples:
+          - '630090'
+          maxLength: 6
+          minLength: 6
+          title: Postal Code
+          type: string
+        street:
+          maxLength: 64
+          minLength: 2
+          title: Street
+          type: string
+      required:
+      - city
+      - street
+      - house
+      - apartment
+      - postal_code
+      title: AddressModel
+      type: object
+    BalanceChangeModel:
+      properties:
+        delta:
+          description: Delta of user balance in hundredths of fanfcoin
+          exclusiveMinimum: 0.0
+          title: Delta
+          type: integer
+        store_id:
+          examples:
+          - 672f3785db934d9b84beaafd
+          title: Store Id
+          type: string
+        user_id:
+          examples:
+          - cc6ac193-ce1a-44a8-b559-05199bb7cc02
+          format: uuid4
+          title: User Id
+          type: string
+      required:
+      - user_id
+      - store_id
+      - delta
+      title: BalanceChangeModel
+      type: object
+    DetailModel:
+      properties:
+        detail:
+          title: Detail
+          type: string
+      required:
+      - detail
+      title: DetailModel
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    OrderChangeStatusModel:
+      properties:
+        new_status:
+          $ref: '#/components/schemas/OrderStatus'
+      required:
+      - new_status
+      title: OrderChangeStatusModel
+      type: object
+    OrderContactInfoModel:
+      properties:
+        last_first_name:
+          examples:
+          - Kondrenko Kirill
+          maxLength: 61
+          minLength: 5
+          title: Last First Name
+          type: string
+        phone_number:
+          examples:
+          - '+71234567890'
+          title: Phone Number
+          type: string
+      required:
+      - last_first_name
+      - phone_number
+      title: OrderContactInfoModel
+      type: object
+    OrderCreatedModel:
+      properties:
+        order_id:
+          examples:
+          - cdaaba77-8c05-4e17-83bb-b6867e13d188
+          format: uuid4
+          title: Order Id
+          type: string
+        order_status:
+          $ref: '#/components/schemas/OrderStatus'
+      required:
+      - order_id
+      - order_status
+      title: OrderCreatedModel
+      type: object
+    OrderCreationModel:
+      properties:
+        contact_info:
+          $ref: '#/components/schemas/OrderContactInfoModel'
+        delivery_address:
+          $ref: '#/components/schemas/AddressModel'
+        products:
+          items:
+            $ref: '#/components/schemas/OrderCreationProductModel'
+          minItems: 1
+          title: Products
+          type: array
+        store_id:
+          examples:
+          - 672f3785db934d9b84beaafd
+          title: Store Id
+          type: string
+      required:
+      - store_id
+      - products
+      - delivery_address
+      - contact_info
+      title: OrderCreationModel
+      type: object
+    OrderCreationProductModel:
+      properties:
+        count:
+          exclusiveMinimum: 0.0
+          title: Count
+          type: integer
+        id:
+          examples:
+          - 67299778f8883054bfb28b7d
+          title: Id
+          type: string
+      required:
+      - id
+      - count
+      title: OrderCreationProductModel
+      type: object
+    OrderInfoModel:
+      properties:
+        contact_info:
+          $ref: '#/components/schemas/OrderContactInfoModel'
+        delivery_address:
+          $ref: '#/components/schemas/AddressModel'
+        order_creation_timestamp:
+          format: date-time
+          title: Order Creation Timestamp
+          type: string
+        order_id:
+          examples:
+          - cdaaba77-8c05-4e17-83bb-b6867e13d188
+          format: uuid4
+          title: Order Id
+          type: string
+        order_reception_timestamp:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Order Reception Timestamp
+        products:
+          description: products are sorted in descending of their prices
+          items:
+            $ref: '#/components/schemas/ProductModel'
+          title: Products
+          type: array
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        store_id:
+          examples:
+          - 672f3785db934d9b84beaafd
+          title: Store Id
+          type: string
+        total_price:
+          description: Total price of order in kopeks
+          minimum: 0.0
+          title: Total Price
+          type: integer
+      required:
+      - store_id
+      - order_id
+      - total_price
+      - status
+      - order_creation_timestamp
+      - order_reception_timestamp
+      - products
+      - delivery_address
+      - contact_info
+      title: OrderInfoModel
+      type: object
+    OrderStatus:
+      enum:
+      - created
+      - assembly
+      - on_the_way
+      - awaiting_receipt
+      - received
+      - canceled
+      title: OrderStatus
+      type: string
+    ProductModel:
+      properties:
+        count:
+          exclusiveMinimum: 0.0
+          title: Count
+          type: integer
+        id:
+          examples:
+          - 67299778f8883054bfb28b7d
+          title: Id
+          type: string
+        logo_url:
+          anyOf:
+          - format: uri
+            maxLength: 2083
+            minLength: 1
+            type: string
+          - type: 'null'
+          title: Logo Url
+        price:
+          description: Price of product in kopeks
+          maximum: 999999999.0
+          minimum: 0.0
+          title: Price
+          type: integer
+        title:
+          examples:
+          - My awesome product
+          maxLength: 128
+          minLength: 1
+          title: Title
+          type: string
+      required:
+      - id
+      - title
+      - price
+      - count
+      title: ProductModel
+      type: object
+    SingleOrderInfoModel:
+      properties:
+        contact_info:
+          $ref: '#/components/schemas/OrderContactInfoModel'
+        delivery_address:
+          $ref: '#/components/schemas/AddressModel'
+        is_seller:
+          title: Is Seller
+          type: boolean
+        order_creation_timestamp:
+          format: date-time
+          title: Order Creation Timestamp
+          type: string
+        order_id:
+          examples:
+          - cdaaba77-8c05-4e17-83bb-b6867e13d188
+          format: uuid4
+          title: Order Id
+          type: string
+        order_reception_timestamp:
+          anyOf:
+          - format: date-time
+            type: string
+          - type: 'null'
+          title: Order Reception Timestamp
+        products:
+          description: products are sorted in descending of their prices
+          items:
+            $ref: '#/components/schemas/ProductModel'
+          title: Products
+          type: array
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        store_id:
+          examples:
+          - 672f3785db934d9b84beaafd
+          title: Store Id
+          type: string
+        total_price:
+          description: Total price of order in kopeks
+          minimum: 0.0
+          title: Total Price
+          type: integer
+      required:
+      - store_id
+      - order_id
+      - total_price
+      - status
+      - order_creation_timestamp
+      - order_reception_timestamp
+      - products
+      - delivery_address
+      - contact_info
+      - is_seller
+      title: SingleOrderInfoModel
+      type: object
+    UserBalanceModel:
+      properties:
+        balance:
+          description: Balance of user in kopeks
+          minimum: 0.0
+          title: Balance
+          type: integer
+      required:
+      - balance
+      title: UserBalanceModel
+      type: object
+    UserOrdersModel:
+      properties:
+        orders:
+          items:
+            $ref: '#/components/schemas/OrderInfoModel'
+          title: Orders
+          type: array
+      required:
+      - orders
+      title: UserOrdersModel
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+  securitySchemes:
+    OAuth2PasswordBearer:
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: ''
+      type: oauth2
+info:
+  title: FastAPI
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /balances:
+    get:
+      operationId: get_user_balance
+      parameters:
+      - example: 672f3785db934d9b84beaafd
+        in: query
+        name: store_id
+        required: true
+        schema:
+          title: Store Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserBalanceModel'
+          description: Success
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Get User Balance
+      tags:
+      - balances
+    post:
+      operationId: change_user_balance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceChangeModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Success
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Change User Balance
+      tags:
+      - internal
+  /orders:
+    post:
+      operationId: create_order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreationModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderCreatedModel'
+          description: Order is created
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Invalid ID of store or products
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Price of order is too high
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Create Order
+      tags:
+      - orders
+  /orders/active:
+    get:
+      description: Returns active orders sorted in descending by creation date. See
+        parameter `ordered_from` for details.
+      operationId: get_active_orders
+      parameters:
+      - description: 'True: returns orders that were ordered from current user''s
+          store, False: returns orders that current user ordered'
+        in: query
+        name: ordered_from
+        required: true
+        schema:
+          description: 'True: returns orders that were ordered from current user''s
+            store, False: returns orders that current user ordered'
+          title: Ordered From
+          type: boolean
+      - description: Max number of products that will be returned in the order
+        in: query
+        name: product_limit
+        required: false
+        schema:
+          anyOf:
+          - minimum: 0
+            type: integer
+          - type: 'null'
+          description: Max number of products that will be returned in the order
+          title: Product Limit
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOrdersModel'
+          description: Success
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Orders from current user's store were requested, but the current
+            user isn't seller (see parameter `ordered_from` for details)
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Get Active Orders
+      tags:
+      - orders
+  /orders/archive:
+    get:
+      description: Returns archive orders sorted in descending by creation date. See
+        parameter `ordered_from` for details.
+      operationId: get_archive_orders
+      parameters:
+      - description: 'True: returns orders that were ordered from current user''s
+          store, False: returns orders that current user was ordered'
+        in: query
+        name: ordered_from
+        required: true
+        schema:
+          description: 'True: returns orders that were ordered from current user''s
+            store, False: returns orders that current user was ordered'
+          title: Ordered From
+          type: boolean
+      - description: Max number of products that will be returned in the order
+        in: query
+        name: product_limit
+        required: false
+        schema:
+          anyOf:
+          - minimum: 0
+            type: integer
+          - type: 'null'
+          description: Max number of products that will be returned in the order
+          title: Product Limit
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOrdersModel'
+          description: Success
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Orders from current user's store were requested, but the current
+            user isn't seller (see parameter `ordered_from` for details)
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Get Archive Orders
+      tags:
+      - orders
+  /orders/{order_id}:
+    get:
+      operationId: get_order_info
+      parameters:
+      - example: cdaaba77-8c05-4e17-83bb-b6867e13d188
+        in: path
+        name: order_id
+        required: true
+        schema:
+          format: uuid
+          title: Order Id
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleOrderInfoModel'
+          description: Successful response
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Permission denied
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Order not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Get Order Info
+      tags:
+      - orders
+  /orders/{order_id}/status:
+    patch:
+      operationId: change_order_status
+      parameters:
+      - example: cdaaba77-8c05-4e17-83bb-b6867e13d188
+        in: path
+        name: order_id
+        required: true
+        schema:
+          format: uuid
+          title: Order Id
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderChangeStatusModel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Status has changed
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Permission denied
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailModel'
+          description: Order not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - OAuth2PasswordBearer: []
+      summary: Change Order Status
+      tags:
+      - orders

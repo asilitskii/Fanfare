@@ -1,0 +1,139 @@
+@use '../../styles/common.scss';
+
+$header-height: 181px;
+
+.header {
+	scrollbar-gutter: stable;
+	min-width: 400px;
+	display: flex;
+	flex-flow: row nowrap;
+	height: $header-height;
+	max-height: $header-height;
+	transform: translateY(0);
+	width: 100%;
+
+	&::before {
+		// Тут начинается колхоз ради размытого хэдера с четкими дочерними компонентами. Мне жаль, но меня заставили. ::cigarette::
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: #b385f8;
+		filter: blur(12px);
+		z-index: -1;
+	}
+}
+
+.nameBlock {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	padding-left: 5%;
+	filter: common.$default-shadows;
+
+	h1 {
+		font-family: common.$main-header-font-family;
+		font-size: 64px;
+		font-weight: 400;
+		text-align: left;
+		cursor: pointer;
+	}
+}
+
+.searchWrapper {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 60vw;
+	padding-left: 5%;
+
+	input {
+		width: 100%;
+		height: 25%;
+		border-radius: 17px;
+		border: 3px solid common.$dark-blue;
+		padding-left: 2rem;
+		padding-right: 100px;
+		font-size: 26px;
+		line-height: 100%;
+
+		&::placeholder {
+			font-size: 26px;
+			font-weight: 400;
+			text-align: left;
+			color: #8e8e93;
+		}
+	}
+
+	button {
+		height: 25%;
+		width: 96px;
+		right: 0;
+		top: 0;
+		background: common.$dark-blue;
+		border-radius: 17px;
+		transform: translateX(-100%);
+
+		img {
+			display: block;
+			margin: 0 auto;
+			width: 60%;
+		}
+
+		cursor: pointer;
+	}
+
+	*:focus {
+		outline: none;
+	}
+}
+
+.profileButton {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 24px;
+	font-weight: 400;
+	text-align: center;
+
+	div {
+		color: common.$dark-blue;
+	}
+
+	cursor: pointer;
+	filter: drop-shadow(0 0 10px #fff) drop-shadow(0 0 5px #fff);
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex: 1 auto;
+}
+
+@media (width < 1200px) {
+	.nameBlock {
+		h1 {
+			font-size: calc(1em + 2.2vw);
+		}
+	}
+}
+
+@media (width < 520px) {
+	.searchWrapper {
+		input {
+			font-size: 12px;
+
+			&::placeholder {
+				font-size: 12px;
+			}
+		}
+	}
+
+	.profileButton {
+		max-width: 80px;
+		font-size: 12px;
+	}
+}

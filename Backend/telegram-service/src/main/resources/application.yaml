@@ -1,0 +1,26 @@
+server:
+  address: ${SERVER_ADDR}
+  port: ${SERVER_PORT}
+spring:
+  application:
+    name: 'tg-service'
+  jpa:
+    open-in-view: false
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_USER_DATABASE_NAME}?autoreconnect=true
+    username: ${POSTGRES_USER_NAME}
+    password: ${POSTGRES_USER_PASSWORD}
+  flyway:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_USER_DATABASE_NAME}?autoreconnect=true
+    user: ${POSTGRES_USER_NAME}
+    password: ${POSTGRES_USER_PASSWORD}
+  scheduler:
+    fixed_rate: ${BALANCE_CRON_RATE}
+  order-service:
+    connection_string: ${ORDER_SERVICE_CONNECTION_STRING}
+  store-service:
+    connection_string: ${STORE_SERVICE_CONNECTION_STRING}
+
+bot:
+  name: ${TG_BOT_NAME}
+  token: ${TG_BOT_TOKEN}
